@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Paper, Box, Typography, Button } from '@mui/material';
-import { ChevronRight } from 'lucide-react';
-import NameStep from './steps/NameStep';
-import WheelsStep from './steps/WheelsStep';
-import VehicleTypeStep from './steps/VehicleTypeStep';
-import VehicleModelStep from './steps/VehicleModelStep';
-import DateRangeStep from './steps/DateRangeStep';
-import ConfirmationStep from './steps/ConfirmationStep';
-import { BookingFormData } from '../types/booking';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Paper, Box, Typography, Button } from "@mui/material";
+import { ChevronRight } from "lucide-react";
+import NameStep from "./steps/NameStep";
+import WheelsStep from "./steps/WheelsStep";
+import VehicleTypeStep from "./steps/VehicleTypeStep";
+import VehicleModelStep from "./steps/VehicleModelStep";
+import DateRangeStep from "./steps/DateRangeStep";
+import ConfirmationStep from "./steps/ConfirmationStep";
+import { BookingFormData } from "../types/booking";
 
 // Animation variants for form steps
 const variants = {
@@ -30,8 +30,8 @@ const BookingForm: React.FC = () => {
   const [step, setStep] = useState<number>(0);
   const [direction, setDirection] = useState<number>(0);
   const [formData, setFormData] = useState<BookingFormData>({
-    firstName: '',
-    lastName: '',
+    firstName: "",
+    lastName: "",
     wheels: null,
     vehicleTypeId: null,
     vehicleId: null,
@@ -48,7 +48,9 @@ const BookingForm: React.FC = () => {
   const isStepValid = () => {
     switch (step) {
       case 0: // Name step
-        return formData.firstName.trim() !== '' && formData.lastName.trim() !== '';
+        return (
+          formData.firstName.trim() !== "" && formData.lastName.trim() !== ""
+        );
       case 1: // Wheels step
         return formData.wheels !== null;
       case 2: // Vehicle type step
@@ -56,7 +58,10 @@ const BookingForm: React.FC = () => {
       case 3: // Vehicle model step
         return formData.vehicleId !== null;
       case 4: // Date range step
-        return formData.dateRange.startDate !== null && formData.dateRange.endDate !== null;
+        return (
+          formData.dateRange.startDate !== null &&
+          formData.dateRange.endDate !== null
+        );
       default:
         return true;
     }
@@ -64,7 +69,7 @@ const BookingForm: React.FC = () => {
 
   const handleNext = () => {
     if (!isStepValid()) return;
-    
+
     setDirection(1);
     setStep((prevStep) => prevStep + 1);
   };
@@ -82,8 +87,8 @@ const BookingForm: React.FC = () => {
   // Reset the form
   const resetForm = () => {
     setFormData({
-      firstName: '',
-      lastName: '',
+      firstName: "",
+      lastName: "",
       wheels: null,
       vehicleTypeId: null,
       vehicleId: null,
@@ -103,7 +108,7 @@ const BookingForm: React.FC = () => {
     switch (step) {
       case 0:
         return (
-          <NameStep 
+          <NameStep
             firstName={formData.firstName}
             lastName={formData.lastName}
             updateFormData={updateFormData}
@@ -111,14 +116,14 @@ const BookingForm: React.FC = () => {
         );
       case 1:
         return (
-          <WheelsStep 
+          <WheelsStep
             wheels={formData.wheels}
             updateFormData={updateFormData}
           />
         );
       case 2:
         return (
-          <VehicleTypeStep 
+          <VehicleTypeStep
             wheels={formData.wheels as number}
             vehicleTypeId={formData.vehicleTypeId}
             updateFormData={updateFormData}
@@ -126,22 +131,22 @@ const BookingForm: React.FC = () => {
         );
       case 3:
         return (
-          <VehicleTypeStep 
-            wheels={formData.wheels as number}
-            vehicleTypeId={formData.vehicleTypeId}
+          <VehicleModelStep
+            vehicleTypeId={formData.vehicleTypeId as number}
+            vehicleId={formData.vehicleId}
             updateFormData={updateFormData}
           />
         );
       case 4:
         return (
-          <DateRangeStep 
+          <DateRangeStep
             dateRange={formData.dateRange}
             updateFormData={updateFormData}
           />
         );
       case 5:
         return (
-          <ConfirmationStep 
+          <ConfirmationStep
             formData={formData}
             isSubmitting={isSubmitting}
             bookingSuccess={bookingSuccess}
@@ -155,12 +160,21 @@ const BookingForm: React.FC = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ width: '100%', maxWidth: 600, overflow: 'hidden' }}>
+    <Paper
+      elevation={3}
+      sx={{ width: "100%", maxWidth: 600, overflow: "hidden" }}
+    >
       <Box p={4}>
-        <Typography variant="h5" component="h1" gutterBottom align="center" sx={{ mb: 4 }}>
+        <Typography
+          variant="h5"
+          component="h1"
+          gutterBottom
+          align="center"
+          sx={{ mb: 4 }}
+        >
           Vehicle Rental Booking
         </Typography>
-        
+
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={step}
@@ -169,31 +183,30 @@ const BookingForm: React.FC = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ type: 'tween', duration: 0.3 }}
+            transition={{ type: "tween", duration: 0.3 }}
           >
-            <Box minHeight={300}>
-              {renderStep()}
-            </Box>
+            <Box minHeight={300}>{renderStep()}</Box>
           </motion.div>
         </AnimatePresence>
-        
+
         {step < 5 && (
-          <Box display="flex" justifyContent={step > 0 ? 'space-between' : 'flex-end'} mt={4}>
+          <Box
+            display="flex"
+            justifyContent={step > 0 ? "space-between" : "flex-end"}
+            mt={4}
+          >
             {step > 0 && (
-              <Button 
-                variant="outlined" 
-                onClick={handleBack}
-              >
+              <Button variant="outlined" onClick={handleBack}>
                 Back
               </Button>
             )}
-            <Button 
-              variant="contained" 
-              endIcon={<ChevronRight size={18} />} 
+            <Button
+              variant="contained"
+              endIcon={<ChevronRight size={18} />}
               onClick={handleNext}
               disabled={!isStepValid()}
             >
-              {step === 4 ? 'Submit' : 'Next'}
+              {step === 4 ? "Submit" : "Next"}
             </Button>
           </Box>
         )}
